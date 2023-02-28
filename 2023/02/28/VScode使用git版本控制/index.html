@@ -16,17 +16,23 @@
   <meta name="author" content="Bruce">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Visual Studio Code结合Git与GitHub（macOS 13） 原文链接：https:&#x2F;&#x2F;blog.csdn.net&#x2F;EvelynHouseba&#x2F;article&#x2F;details&#x2F;105426477  安装vscode和git  注册github  配置ssh公钥 原文链接：https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin_42310154&#x2F;article&#x2F;details">
+    <meta name="description" content="Visual Studio Code结合Git与GitHub（系统为macOS 13）">
 <meta property="og:type" content="article">
 <meta property="og:title" content="VScode使用git版本控制">
 <meta property="og:url" content="http://example.com/2023/02/28/VScode%E4%BD%BF%E7%94%A8git%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/index.html">
 <meta property="og:site_name" content="Bruce的BLOG">
-<meta property="og:description" content="Visual Studio Code结合Git与GitHub（macOS 13） 原文链接：https:&#x2F;&#x2F;blog.csdn.net&#x2F;EvelynHouseba&#x2F;article&#x2F;details&#x2F;105426477  安装vscode和git  注册github  配置ssh公钥 原文链接：https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin_42310154&#x2F;article&#x2F;details">
+<meta property="og:description" content="Visual Studio Code结合Git与GitHub（系统为macOS 13）">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/02/28/VScode%E4%BD%BF%E7%94%A8git%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/image-20230225210325994.png">
 <meta property="article:published_time" content="2023-02-28T13:11:01.000Z">
-<meta property="article:modified_time" content="2023-02-28T13:18:52.725Z">
+<meta property="article:modified_time" content="2023-02-28T13:35:34.135Z">
 <meta property="article:author" content="Bruce">
+<meta property="article:tag" content="git">
+<meta property="article:tag" content="github">
+<meta property="article:tag" content="vscode">
+<meta property="article:tag" content="MacOS">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/02/28/VScode%E4%BD%BF%E7%94%A8git%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/image-20230225210325994.png">
   
   
   
@@ -251,7 +257,7 @@
         
         
         
-          19 分钟
+          18 分钟
         
       </span>
     
@@ -302,17 +308,7 @@
             
               <div class="markdown-body">
                 
-                <ul>
-<li><p>Visual Studio Code结合Git与GitHub（macOS 13）</p>
-<p>原文链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/EvelynHouseba/article/details/105426477">https://blog.csdn.net/EvelynHouseba/article/details/105426477</a></p>
-<ol>
-<li><p><strong>安装vscode和git</strong></p>
-</li>
-<li><p><strong>注册github</strong></p>
-</li>
-<li><p><strong>配置ssh公钥</strong></p>
-<p>原文链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42310154/article/details/118340458">https://blog.csdn.net/weixin_42310154/article/details/118340458</a></p>
-<p><strong>为什么要配置</strong></p>
+                <h2 id="安装vscode和git"><a href="#安装vscode和git" class="headerlink" title="安装vscode和git"></a><strong>安装vscode和git</strong></h2><h2 id="注册github"><a href="#注册github" class="headerlink" title="注册github"></a><strong>注册github</strong></h2><h2 id="配置ssh公钥-2"><a href="#配置ssh公钥-2" class="headerlink" title="配置ssh公钥[2]"></a><strong>配置ssh公钥<sup id="fnref:2" class="footnote-ref"><a href="#fn:2" rel="footnote"><span class="hint--top hint--rounded" aria-label="https://blog.csdn.net/weixin_42310154/article/details/118340458">[2]</span></a></sup></strong></h2><p><strong>为什么要配置</strong></p>
 <blockquote>
 <p>我们在往github上push项目的时候，如果走https的方式，每次都需要输入账号密码，非常麻烦。而采用ssh的方式，就不再需要输入，只需要在github自己账号下配置一个ssh key即可。</p>
 </blockquote>
@@ -337,7 +333,7 @@
 <blockquote>
 <p>RSA密钥默认长度是2048，最小768，你可以在最后一条命令中使用“-b xxx”指定密钥长度，eg：“-b 1024”指定1024长度，-t 是指类型，-C是指注释</p>
 </blockquote>
-
+<img src="/2023/02/28/VScode%E4%BD%BF%E7%94%A8git%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/image-20230225210325994.png" srcset="/img/loading.gif" lazyload class="" title="ssh_key">
 
 <p><strong>第三步：获取ssh key公钥内容（id_rsa.pub）</strong></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> ~/.ssh<br><span class="hljs-built_in">cat</span> id_rsa.pub<br></code></pre></td></tr></table></figure>
@@ -361,10 +357,7 @@
 <p>重点来了：一定要知道ssh key的配置是针对每台主机的！，比如我在某台主机上操作git和我的远程仓库，想要push时不输入账号密码，走ssh协议，就需要配置ssh key，放上去的key是当前主机的ssh公钥。那么如果我换了一台其他主机，想要实现无密登录，也就需要重新配置。</p>
 <hr>
 <p><strong>下面解释开头提出的问题：</strong><br>（1）为什么要配？<br>配了才能实现push代码的时候不需要反复输入自己的github账号密码，更方便<br>（2）每使用一台主机都要配？<br>是的，每使用一台新主机进行git远程操作，想要实现无密，都需要配置。并不是说每个账号配一次就够了，而是每一台主机都需要配。<br>（3）配了为啥就不用密码了？<br>因为配置的时候是把当前主机的公钥放到了你的github账号下，相当于当前主机和你的账号做了一个关联，你在这台主机上已经登录了你的账号，此时此刻github认为是该账号主人在操作这台主机，在配置ssh后就信任该主机了。所以下次在使用git的时候即使没有登录github，也能直接从本地push代码到远程了。当然这里不要混淆了，你不能随意push你的代码到任何仓库，你只能push到你自己的仓库或者其他你有权限的仓库！</p>
-</li>
-<li><p><strong>本地仓库和远程库的关联</strong></p>
-<p>原文链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/EvelynHouseba/article/details/105431094">https://blog.csdn.net/EvelynHouseba/article/details/105431094</a></p>
-<p>二者的关联有以下2种方式：</p>
+<h2 id="本地仓库和远程库的关联-3"><a href="#本地仓库和远程库的关联-3" class="headerlink" title="本地仓库和远程库的关联[3]"></a><strong>本地仓库和远程库的关联<sup id="fnref:3" class="footnote-ref"><a href="#fn:3" rel="footnote"><span class="hint--top hint--rounded" aria-label="https://blog.csdn.net/EvelynHouseba/article/details/105431094">[3]</span></a></sup></strong></h2><p>二者的关联有以下2种方式：</p>
 <ul>
 <li><p>如果我们从零开发，推荐先在GitHub上创建远程库，然后从远程库克隆到本地，这样两个仓库就可以同步</p>
 </li>
@@ -389,15 +382,12 @@
 </ol>
 </li>
 </ul>
-</li>
-<li><p><strong>在Visual Studio Code中使用Git和GitHub</strong></p>
-</li>
-<li></li>
-</ol>
-</li>
-<li></li>
-</ul>
-
+<h2 id="在Visual-Studio-Code中使用Git和GitHub"><a href="#在Visual-Studio-Code中使用Git和GitHub" class="headerlink" title="在Visual Studio Code中使用Git和GitHub"></a><strong>在Visual Studio Code中使用Git和GitHub</strong></h2><hr>
+<p>参考文献：</p>
+<section class="footnotes"><div class="footnote-list"><ol><li><span id="fn:1" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://blog.csdn.net/EvelynHouseba/article/details/105426477">https://blog.csdn.net/EvelynHouseba/article/details/105426477</a>
+<a href="#fnref:1" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:2" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42310154/article/details/118340458">https://blog.csdn.net/weixin_42310154/article/details/118340458</a>
+<a href="#fnref:2" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:3" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://blog.csdn.net/EvelynHouseba/article/details/105431094">https://blog.csdn.net/EvelynHouseba/article/details/105431094</a>
+<a href="#fnref:3" rev="footnote" class="footnote-backref"> ↩</a></span></span></li></ol></div></section>
                 
               </div>
             
@@ -405,6 +395,57 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/github/" class="category-chain-item">github</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/github/git/" class="category-chain-item">git</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/MacOS%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/" class="category-chain-item">MacOS使用技巧</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/git/">#git</a>
+      
+        <a href="/tags/github/">#github</a>
+      
+        <a href="/tags/vscode/">#vscode</a>
+      
+        <a href="/tags/MacOS/">#MacOS</a>
+      
+    </div>
   
 </div>
 
