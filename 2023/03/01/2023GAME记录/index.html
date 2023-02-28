@@ -16,24 +16,24 @@
   <meta name="author" content="Bruce">
   <meta name="keywords" content="">
   
-    <meta name="description" content="hexo可以结合github page搭建博客">
+    <meta name="description" content="2023年完成的游戏的记录，以及愿望清单">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hexo常用命令">
-<meta property="og:url" content="http://example.com/2023/02/28/Hexo%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html">
+<meta property="og:title" content="2023GAME记录">
+<meta property="og:url" content="http://example.com/2023/03/01/2023GAME%E8%AE%B0%E5%BD%95/index.html">
 <meta property="og:site_name" content="Bruce的BLOG">
-<meta property="og:description" content="hexo可以结合github page搭建博客">
+<meta property="og:description" content="2023年完成的游戏的记录，以及愿望清单">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-02-28T13:49:48.000Z">
-<meta property="article:modified_time" content="2023-02-28T13:53:11.566Z">
+<meta property="og:image" content="http://example.com/img/article/game.png">
+<meta property="article:published_time" content="2023-02-28T16:47:07.000Z">
+<meta property="article:modified_time" content="2023-02-28T17:21:41.828Z">
 <meta property="article:author" content="Bruce">
-<meta property="article:tag" content="github">
-<meta property="article:tag" content="hexo">
-<meta property="article:tag" content="博客搭建">
+<meta property="article:tag" content="游戏">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/article/game.png">
   
   
   
-  <title>Hexo常用命令 - Bruce的BLOG</title>
+  <title>2023GAME记录 - Bruce的BLOG</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -220,7 +220,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Hexo常用命令"></span>
+            <span id="subtitle" data-typed-text="2023GAME记录"></span>
           
         </div>
 
@@ -231,8 +231,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-02-28 21:49" pubdate>
-          2023年2月28日 晚上
+        <time datetime="2023-03-01 00:47" pubdate>
+          2023年3月1日 凌晨
         </time>
       </span>
     
@@ -243,7 +243,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          588 字
+          861 字
         
       </span>
     
@@ -254,7 +254,7 @@
         
         
         
-          5 分钟
+          8 分钟
         
       </span>
     
@@ -300,87 +300,46 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Hexo常用命令</h1>
+            <h1 style="display: none">2023GAME记录</h1>
             
             
               <div class="markdown-body">
                 
-                <h2 id="generate"><a href="#generate" class="headerlink" title="generate"></a>generate</h2><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs verilog">hexo <span class="hljs-keyword">generate</span><br></code></pre></td></tr></table></figure>
-
-<p>修改完配置需要生成静态文件</p>
-<table>
-<thead>
-<tr>
-<th align="left">选项</th>
-<th align="left">描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><code>-d</code>, <code>--deploy</code></td>
-<td align="left">文件生成后立即部署网站</td>
-</tr>
-<tr>
-<td align="left"><code>-w</code>, <code>--watch</code></td>
-<td align="left">监视文件变动</td>
-</tr>
-<tr>
-<td align="left"><code>-b</code>, <code>--bail</code></td>
-<td align="left">生成过程中如果发生任何未处理的异常则抛出异常</td>
-</tr>
-<tr>
-<td align="left"><code>-f</code>, <code>--force</code></td>
-<td align="left">强制重新生成文件 Hexo 引入了差分机制，如果 <code>public</code> 目录存在，那么 <code>hexo g</code> 只会重新生成改动的文件。 使用该参数的效果接近 <code>hexo clean &amp;&amp; hexo generate</code></td>
-</tr>
-<tr>
-<td align="left"><code>-c</code>, <code>--concurrency</code></td>
-<td align="left">最大同时生成文件的数量，默认无限制</td>
-</tr>
-</tbody></table>
-<h2 id="server"><a href="#server" class="headerlink" title="server"></a>server</h2><figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs axapta">hexo <span class="hljs-keyword">server</span><br></code></pre></td></tr></table></figure>
-
-<p>启动服务器。默认情况下，访问网址为： <code>http://localhost:4000/</code>。本地预览的时候使用</p>
-<table>
-<thead>
-<tr>
-<th align="left">选项</th>
-<th align="left">描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><code>-p</code>, <code>--port</code></td>
-<td align="left">重设端口</td>
-</tr>
-<tr>
-<td align="left"><code>-s</code>, <code>--static</code></td>
-<td align="left">只使用静态文件</td>
-</tr>
-<tr>
-<td align="left"><code>-l</code>, <code>--log</code></td>
-<td align="left">启动日记记录，使用覆盖记录格式</td>
-</tr>
-</tbody></table>
-<h2 id="clean"><a href="#clean" class="headerlink" title="clean"></a>clean</h2><figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crystal"><span class="hljs-variable">$ </span>hexo clean<br></code></pre></td></tr></table></figure>
-
-<p>清除缓存文件 (<code>db.json</code>) 和已生成的静态文件 (<code>public</code>)。</p>
-<p>在某些情况（尤其是更换主题后），如果发现您对站点的更改无论如何也不生效，您可能需要运行该命令。</p>
-<h2 id="deploy"><a href="#deploy" class="headerlink" title="deploy"></a>deploy</h2><figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crystal"><span class="hljs-variable">$ </span>hexo deploy<br></code></pre></td></tr></table></figure>
-
-<p>部署网站，<strong>每次先clean，再generate，再deploy</strong>，仓库里存的内容是blog文件夹中的public文件夹的内容</p>
-<table>
-<thead>
-<tr>
-<th align="left">参数</th>
-<th align="left">描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><code>-g</code>, <code>--generate</code></td>
-<td align="left">部署之前预先生成静态文件</td>
-</tr>
-</tbody></table>
-<p>该命令可以简写为：</p>
-<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crystal"><span class="hljs-variable">$ </span>hexo d<br></code></pre></td></tr></table></figure>
-
+                <h2 id="已完成"><a href="#已完成" class="headerlink" title="已完成"></a><strong>已完成</strong></h2><ul>
+<li><p><strong>死亡空间重置版</strong></p>
+<p><strong>优点：</strong></p>
+<p>重制版画面很好，恐怖气氛强烈，所以玩了大概20小时才通关，后续希望打完原版2和3</p>
+<p><strong>缺点：</strong></p>
+<p>玩的steam版本bug有点多，特别是在切换显示器的时候。每个画质下掉帧都很严重，据说是D加密的原因</p>
+<p><strong>剧情上的疑问：</strong></p>
+<p>为什么神印主动诱导艾萨克将其放回神盾七星球？</p>
+<p>无论是石村号上的统一教徒还是地球政府派来的丹尼尔斯，他们的目的是把神印运回地球/转移隐藏。然而地球上存在的人类更多，为什么神印要拒绝？</p>
+<p>为什么神印要在石村号上就引发变异而不是等到回到地球？</p>
+<p>即使他们的目的地不是地球，神印或许也能通过精神控制改变航线？</p>
+<hr>
+<blockquote>
+<p>这个事其实很简单，神盾七上有红色神印花了大量时间聚合了的心血“群巢之主”，而且再花一点时间红色神印就打算用群主把神盾七给聚合成血月了，就在这个关键节点，石村号把红色神印给带走了，就相当于红色神印干了一大半的活结果现在中断了，而群主本身算是红色神印的身体，现在神盾七上只剩下没有大脑的身体胡乱瞎指挥而且还想自己提前聚合成血月，红色神印也很无奈就想方设法骗还活着的这些角色比如凯恩博士还有包括主角在内一杆人等，意思是我回到神盾七底座，所有尸变体就不会再作妖，其实是欺骗了凯恩和主角。</p>
+</blockquote>
+<blockquote>
+<p>再一个，神印想不想引发变异不是他自己能决定的，神印会一直向外发射dna代码。回到地球也没啥用，神印的辐射范围也就几百公里，就这还想翻天不成？</p>
+</blockquote>
+<blockquote>
+<p>神印只是想回到基座（具有抑制整个星球的能力），完成殖民地的聚合。</p>
+</blockquote>
+<hr>
+<p><strong>其他：</strong></p>
+<ul>
+<li>死亡空间是指靠近神印的某种场，可以使得尸变体的动作减缓（抑制），基座的作用就是放大死亡空间</li>
+<li>敌方势力包括：黑色神印，人造红色神印，血月，心灵蜂巢（血月未完成体），利维坦，地球政府，统一教徒</li>
+</ul>
+</li>
+<li><p><strong>鬼泣5</strong></p>
+</li>
+</ul>
+<h2 id="未完成列表"><a href="#未完成列表" class="headerlink" title="未完成列表"></a><strong>未完成列表</strong></h2><p>已购买：</p>
+<p>装机模拟器，异度之刃2，Doom，无主之地3，地平线2，火焰纹章，宝可梦剑，宝可梦紫，烟火</p>
+<p>未购买：</p>
+<p>蜘蛛侠2，星战2，旷野之息，异度之刃3，生化4，霍格沃滋，猫，师父，hifi rush，王国之泪，戴森球计划，星空，死亡搁浅，最终幻想7，蜘蛛侠迈尔斯莫拉斯，宝可梦，原子之心，恶灵附身，寂静岭，逃生，最终幻想16</p>
 
                 
               </div>
@@ -399,8 +358,15 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" class="category-chain-item">博客搭建</a>
+  <a href="/categories/%E5%90%83%E5%96%9D%E7%8E%A9%E4%B9%90/" class="category-chain-item">吃喝玩乐</a>
   
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%90%83%E5%96%9D%E7%8E%A9%E4%B9%90/ACG/" class="category-chain-item">ACG</a>
+  
+  
+
   
 
       </span>
@@ -414,11 +380,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/github/">#github</a>
-      
-        <a href="/tags/hexo/">#hexo</a>
-      
-        <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">#博客搭建</a>
+        <a href="/tags/%E6%B8%B8%E6%88%8F/">#游戏</a>
       
     </div>
   
@@ -430,8 +392,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Hexo常用命令</div>
-      <div>http://example.com/2023/02/28/Hexo常用命令/</div>
+      <div>2023GAME记录</div>
+      <div>http://example.com/2023/03/01/2023GAME记录/</div>
     </div>
     <div class="license-meta">
       
@@ -443,7 +405,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年2月28日</div>
+          <div>2023年3月1日</div>
         </div>
       
       
@@ -475,18 +437,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/03/01/2023GAME%E8%AE%B0%E5%BD%95/" title="2023GAME记录">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">2023GAME记录</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/02/28/VScode%E4%BD%BF%E7%94%A8git%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/" title="VScode使用git版本控制">
-                        <span class="hidden-mobile">VScode使用git版本控制</span>
+                      <a href="/2023/02/28/Hexo%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" title="Hexo常用命令">
+                        <span class="hidden-mobile">Hexo常用命令</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
