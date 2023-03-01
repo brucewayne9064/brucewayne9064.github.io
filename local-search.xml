@@ -4,6 +4,33 @@
   
   
   <entry>
+    <title>C++学习笔记</title>
+    <link href="/2023/03/01/C-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    <url>/2023/03/01/C-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    
+    <content type="html"><![CDATA[<ul><li><p>关于void在指针的应用：</p><p>void表示“无类型”，void *表示无类型指针。在定义指针的时候，必须声明指针的类型，因为类型决定了指针移动的字节数。</p><p>例：</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">double</span> d＝<span class="hljs-number">3.14</span>;<br><span class="hljs-type">double</span> *dptr=&amp;d;<br><span class="hljs-type">int</span> *iptr=dptr;   <span class="hljs-comment">//错误，double和int占用不同的字节，编译报错。</span><br><br><span class="hljs-type">double</span> d=<span class="hljs-number">3.14</span>;<br><span class="hljs-type">double</span> *dptr=&amp;d;<br><span class="hljs-type">void</span> *vptr=dptr  <span class="hljs-comment">//正确，无类型指针可以接受任何类型的指针。</span><br></code></pre></td></tr></table></figure></li><li><p>main(int argc,char *argv[ ])</p><p>1.argc为整数</p><p>2.argv为指针的指针（可理解为：char **argv or: char *argv[] or: char argv[][]   ，argv是一个指针数组）</p><p>3.下面给出一个例子来理解这两个参数的用法：</p><p>　假设程序的名称为prog，</p><p>   当只输入prog，则由操作系统传来的参数为：</p><p>   argc=1,表示只有一程序名称。</p><p>   argc只有一个元素，argv[0]指向输入的程序路径及名称：./prog</p><p>   当输入prog para_1，有一个参数，则由操作系统传来的参数为：</p><p>   argc=2，表示除了程序名外还有一个参数。 </p><p>   argv[0]指向输入的程序路径及名称。</p><p>   argv[1]指向参数para_1字符串。</p><p>   当输入prog para_1 para_2 有2个参数，则由操作系统传来的参数为：</p><p>   argc=3，表示除了程序名外还有2个参数。</p><p>   argv[0]指向输入的程序路径及名称。</p><p>   argv[1]指向参数para_1字符串。</p><p>   argv[2]指向参数para_2字符串。</p><p>4.举例如下</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs c++"> <span class="hljs-number">1</span> <span class="hljs-comment">/*************************************************************************</span><br><span class="hljs-comment"> 2     &gt; File Name: read_main_param.c</span><br><span class="hljs-comment"> 3     &gt; Author: Mr.Yang</span><br><span class="hljs-comment"> 4     &gt; Purpose:读取主函数中的参数 </span><br><span class="hljs-comment"> 5     &gt; Created Time: 2017年06月01日 星期四 09时46分38秒</span><br><span class="hljs-comment"> 6  ************************************************************************/</span><br> <span class="hljs-number">7</span> <br> <span class="hljs-number">8</span> <span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br> <span class="hljs-number">9</span> <span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-number">10</span> <br><span class="hljs-number">11</span> <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc,<span class="hljs-type">char</span> *argv[])</span></span><br><span class="hljs-function">12 </span>&#123;<br><span class="hljs-number">13</span>         <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%s\n&quot;</span>,argv[<span class="hljs-number">0</span>]);<span class="hljs-comment">//读取可执行程序（包括路径）</span><br><span class="hljs-number">14</span> <br><span class="hljs-number">15</span>         <span class="hljs-comment">/*读取参数*/</span><br><span class="hljs-number">16</span>         <span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;<br><span class="hljs-number">17</span>         <span class="hljs-keyword">while</span>(i &lt; argc)<br><span class="hljs-number">18</span>         &#123;<br><span class="hljs-number">19</span>                 <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%s\n&quot;</span>,argv[i]);<br><span class="hljs-number">20</span>                 i++;<br><span class="hljs-number">21</span>         &#125;<br><span class="hljs-number">22</span>         <span class="hljs-comment">//说明在dos和unix环境下,用&quot;&quot;扩起来的表示其是一个字符串，代表着一个参数</span><br><span class="hljs-number">23</span>         <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br><span class="hljs-number">24</span> &#125;<br></code></pre></td></tr></table></figure></li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>编程语言学习</category>
+      
+      <category>c++</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>c++</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>2023GAME记录</title>
     <link href="/2023/03/01/2023GAME%E8%AE%B0%E5%BD%95/"/>
     <url>/2023/03/01/2023GAME%E8%AE%B0%E5%BD%95/</url>
