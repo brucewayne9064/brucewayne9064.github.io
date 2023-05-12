@@ -1,0 +1,321 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>【网络编程2】TCP编程 | Bruce的BLOG</title><meta name="author" content="Bruce"><meta name="copyright" content="Bruce"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="基于socket套接字的服务器编程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【网络编程2】TCP编程">
+<meta property="og:url" content="https://brucewayne9064.github.io/2023/03/20/TCP%E7%BC%96%E7%A8%8B/index.html">
+<meta property="og:site_name" content="Bruce的BLOG">
+<meta property="og:description" content="基于socket套接字的服务器编程">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://brucewayne9064.github.io/img/sanji_avatar.png">
+<meta property="article:published_time" content="2023-03-20T14:27:00.000Z">
+<meta property="article:modified_time" content="2023-04-27T10:18:57.856Z">
+<meta property="article:author" content="Bruce">
+<meta property="article:tag" content="c++">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="网络编程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://brucewayne9064.github.io/img/sanji_avatar.png"><link rel="shortcut icon" href="/img/bat_logo.png"><link rel="canonical" href="https://brucewayne9064.github.io/2023/03/20/TCP%E7%BC%96%E7%A8%8B/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '【网络编程2】TCP编程',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-04-27 18:18:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/sanji_avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">25</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">19</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/pexels-gdtography.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="Bruce的BLOG"><img class="site-icon" src="/img/bat_logo_big.png"/><span class="site-name">Bruce的BLOG</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">【网络编程2】TCP编程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-03-20T14:27:00.000Z" title="发表于 2023-03-20 22:27:00">2023-03-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-04-27T10:18:57.856Z" title="更新于 2023-04-27 18:18:57">2023-04-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="【网络编程2】TCP编程"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>github仓库：<a target="_blank" rel="noopener" href="https://github.com/brucewayne9064/LinuxCpp_server">https://github.com/brucewayne9064/LinuxCpp_server</a></p>
+<p>套接字编程包括tcp套接字编程，udp套接字编程，原始套接字编程</p>
+<h3 id="一、套接字基本概念"><a href="#一、套接字基本概念" class="headerlink" title="一、套接字基本概念"></a>一、套接字基本概念</h3><p>套接字是TCP/IP模型中应用层与传输层的中间抽象层，socket编程接口是应用层与传输层之间的编程接口</p>
+<p>socket是一种“打开——读/写——关闭”模式的实现，服务器和客户端各自维护一个“文件”，在建立连接后，可以向自己文件写入内容供对方读取或者读取对方的内容，通信结束时关闭文件</p>
+<h3 id="二、网络程序的架构"><a href="#二、网络程序的架构" class="headerlink" title="二、网络程序的架构"></a>二、网络程序的架构</h3><ul>
+<li><p>browser/server</p>
+</li>
+<li><p>client/server (网络编程中使用的架构)</p>
+</li>
+</ul>
+<h3 id="三、IP地址的格式转换"><a href="#三、IP地址的格式转换" class="headerlink" title="三、IP地址的格式转换"></a>三、IP地址的格式转换</h3><p>注意大小端问题</p>
+<ul>
+<li><p>IP地址的高低位：</p>
+<p>IP地址是一个32位的二进制数，通常分为四个字节，每个字节用一个十进制数表示，中间用点隔开。例如，127.0.0.1就是一个IP地址。IP地址可以分为网络部分和主机部分，不同的类别的IP地址有不同的划分方式。一般来说，网络部分在IP地址的高位字节中，主机部分在低位字节中。例如，对于A类地址，第一个字节是网络部分，后面三个字节是主机部分；对于B类地址，前两个字节是网络部分，后两个字节是主机部分。</p>
+</li>
+<li><p>高序字节：</p>
+<p>高序字节是指一个多字节数据中的最高有效位。例如，对于一个四字节的32位整数0x12345678，其高序字节是0x12，低序字节是0x78。</p>
+</li>
+<li><p>大小端：</p>
+<p>大小端是指数据在存储或者传输时的<strong>字节顺序</strong>，具体分为大端和小端。<strong>大端是指将高序字节存储在起始地址</strong>，<strong>小端是指将低序字节存储在起始地址</strong>。例如，对于一个由两个字节组成的16位整数0x1234，在内存中的存储方式如下：</p>
+<table>
+<thead>
+<tr>
+<th align="left">地址</th>
+<th align="left">大端</th>
+<th align="left">小端</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">0x1000</td>
+<td align="left">0x12</td>
+<td align="left">0x34</td>
+</tr>
+<tr>
+<td align="left">0x1001</td>
+<td align="left">0x34</td>
+<td align="left">0x12</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>网络字节序：</p>
+<p>网络字节序是TCP/IP协议规定的一种数据表示格式，它与具体的CPU类型、操作系统等无关，从而可以保证数据在不同主机之间传输时能够被正确解释。网络字节序采用<strong>大端模式</strong>，即数据的高位字节存放在内存的低地址处。</p>
+<p><code>UDP/TCP/IP协议规定:把接收到的第一个字节当作高位字节看待</code>,这就要求发送端发送的第一个字节是高位字节;而在发送端发送数据时,发送的第一个字节是该数值在内存中的起始地址处对应的那个字节,也就是说,该数值在内存中的起始地址处对应的那个字节就是要发送的第一个高位字节</p>
+</li>
+<li><p>主机字节序：</p>
+<p>主机字节序是指某个给定系统所用的字节顺序，它与CPU设计有关，不同的CPU可能有不同的主机字节序。比如x86系列CPU都是小端模式，而Motorola 6800为大端模式。当不同主机字节序的计算机之间进行网络通信时，需要将发送方的主机字节序转换为网络字节序，然后将接收方的网络字节序转换为主机字节序。</p>
+</li>
+<li><p>点分十进制的IP地址是一种人类可读的表示方式，它并不涉及存储方式的问题。所以直接看是看不出来的</p>
+<p>判断本地是大端还是小端的一种方法是通过强制类型转换截断一个多字节数据，看看低地址处存放的是高位字节还是低位字节</p>
+<p>举例说明：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">isBigEndian</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">short</span> test = <span class="number">0x1234</span>; <span class="comment">// 00010010 00110100</span></span><br><span class="line">    <span class="keyword">if</span> (*((<span class="type">unsigned</span> <span class="type">char</span> *)&amp;test) == <span class="number">0x12</span>) <span class="comment">// 取低地址处的字节</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>; <span class="comment">// 大端模式</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>; <span class="comment">// 小端模式</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (isBigEndian())</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;This machine is big endian.\n&quot;</span>);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;This machine is little endian.\n&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<p>inet_addr,inet_ntoa,inet_aton这些函数都是用来在IP地址和整数之间进行转换的，但是有一些区别:</p>
+<ul>
+<li>inet_addr()<strong>把一个点分十进制的IP地址转换成一个网络字节序</strong>（大端的无符号整数），如果输入无效，返回INADDR_NONE（通常是-1）。</li>
+<li>inet_ntoa()<strong>把一个网络字节序转换成一个点分隔的IP地址</strong></li>
+<li>inet_aton()<strong>把一个点分隔的IP地址转换成一个网络字节序的二进制数据，并存储在inp指向的结构体中，</strong>如果地址有效，返回非零值，否则返回零。</li>
+</ul>
+<h3 id="四、套接字的类型"><a href="#四、套接字的类型" class="headerlink" title="四、套接字的类型"></a>四、套接字的类型</h3><p>原始套接字和标准套接字的区别在于原始套接字可以读写内核没有处理的IP数据报，而标准套接字只能读TCP或者UDP报文</p>
+<ul>
+<li><p>流套接字（SOCK_STREAM）</p>
+<p>提供面向连接，可靠的数据传输（因为用了TCP协议）</p>
+</li>
+<li><p>数据报套接字（SOCK_DGRAM）</p>
+<p>提供无连接服务（因为用了UDP协议）</p>
+</li>
+<li><p>原始套接字（SOCK_RAW）</p>
+<p>原始套接字允许对较低层次的协议直接访问（IP,ICMP），常用于检验新的协议实现，或者访问现有服务中配置的新设备，或者用于网络监听</p>
+</li>
+</ul>
+<h3 id="五、套接字地址"><a href="#五、套接字地址" class="headerlink" title="五、套接字地址"></a>五、套接字地址</h3><p>一个套接字代表通信的一端，每端有一个套接字地址（套接字的一个参数）</p>
+<p>socket地址包括：IP地址（从网络中识别主机），端口信息（从主机中识别进程）</p>
+<p>socket地址分为：通用socket地址，专用socket地址（自定义专属网络地址）</p>
+<p>本地机器上的套接字里保存的套接字地址是对方的还是自己的，取决于套接字的类型和使用场景：</p>
+<ul>
+<li>对于流套接字（SOCK_STREAM），通常需要建立连接，所以本地机器上的套接字里保存了对方的套接字地址（IP地址和端口号）</li>
+<li>对于数据报套接字（SOCK_DGRAM），通常不需要建立连接，所以本地机器上的套接字里保存了自己的套接字地址（IP地址和端口号）</li>
+</ul>
+<hr>
+<p>获取套接字地址：</p>
+<ul>
+<li><p>getsockname()：获取本地</p>
+</li>
+<li><p>getpeername()：获取对端</p>
+</li>
+</ul>
+<p>本地产生套接字地址：</p>
+<ul>
+<li>本地套接字通过bind函数获取地址</li>
+<li>本地套接字没有绑定地址，但是通过connect函数和远程建立了连接，此时内核会分配一个地址给本地套接字</li>
+</ul>
+<h3 id="六、主机字节序和网络字节序"><a href="#六、主机字节序和网络字节序" class="headerlink" title="六、主机字节序和网络字节序"></a>六、主机字节序和网络字节序</h3><ul>
+<li>htonl()将uint32_t主机字节序转换为网络字节序</li>
+<li>ntohl()将uint32_t网络字节序转换为主机字节序</li>
+<li>htons()将uint16_t主机字节序转换为网络字节序</li>
+<li>ntohs()将uint16_t网络字节序转换为主机字节序</li>
+</ul>
+<h3 id="七、协议族和地址族"><a href="#七、协议族和地址族" class="headerlink" title="七、协议族和地址族"></a>七、协议族和地址族</h3><p>Linux支持PF和AF，所以指定协议用PF（protocol family），指定地址用AF（address family）</p>
+<h3 id="八、TCP套接字编程的基本步骤"><a href="#八、TCP套接字编程的基本步骤" class="headerlink" title="八、TCP套接字编程的基本步骤"></a>八、TCP套接字编程的基本步骤</h3><p>服务器端编程的七个步骤一般是：</p>
+<ul>
+<li>创建一个套接字（socket函数），用于监听客户端的连接请求。</li>
+<li>绑定一个本地地址和端口到套接字上（bind函数），用于标识服务器的身份。</li>
+<li>将套接字设置为监听模式（listen函数），用于等待客户端的连接请求，该套接字变成<strong>监听套接字</strong>。</li>
+<li>接受一个客户端的连接请求，返回一个新的套接字（accept函数），用于和客户端进行通信。</li>
+<li>通过新的套接字，与客户端进行数据交换（send和recv）。关闭与客户端的通信套接字，结束本次会话（closesocket函数）。</li>
+<li>监听套接字继续监听，等待其他客户端连接请求。</li>
+<li>关闭监听套接字（closesocket函数），结束服务器程序。</li>
+</ul>
+<p>客户端编程的四个步骤一般是：</p>
+<ul>
+<li>创建一个套接字（socket函数），用于和服务器进行通信。</li>
+<li>向服务器发出连接请求（connect函数）。</li>
+<li>和服务器通信（send和recv）</li>
+<li>关闭客户端，关闭套接字（closesocket）。</li>
+</ul>
+<h3 id="九、TCP套接字编程的相关函数"><a href="#九、TCP套接字编程的相关函数" class="headerlink" title="九、TCP套接字编程的相关函数"></a>九、TCP套接字编程的相关函数</h3><ul>
+<li>客户端程序一般不调用bind函数来绑定socket地址，而使用socket默认的地址，是因为客户端不需要确定自己的ip和端口，而是由内核根据路由表来选择一个合适的本地地址和临时端口。如果你尝试读取了新创建的socket，里面的ip是0.0.0.0，端口也是0，那么表示这个socket还没有被绑定到任何具体的地址和端口上。当你调用connect或listen函数时，内核会为这个socket分配一个本地地址和临时端口。你可以通过getsockname函数来获取这个分配后的地址和端口。</li>
+<li>服务器程序为什么要调用bind函数，是因为服务器需要在一个固定的地址和端口上监听客户端的连接请求。如果服务器不调用bind函数，那么内核会为套接字随机分配一个地址和端口，这样客户端就不知道怎么连接到服务器了。而客户端不需要调用bind函数，是因为客户端是主动向服务器发起连接请求的，内核会为客户端套接字自动分配一个本地地址和临时端口。客户端只需要知道服务器的地址和端口，就可以使用connect函数来建立连接了。</li>
+</ul>
+<h3 id="十、简单的TCP套接字编程"><a href="#十、简单的TCP套接字编程" class="headerlink" title="十、简单的TCP套接字编程"></a>十、简单的TCP套接字编程</h3><h3 id="十一、深入理解TCP编程"><a href="#十一、深入理解TCP编程" class="headerlink" title="十一、深入理解TCP编程"></a>十一、深入理解TCP编程</h3><ul>
+<li><p>数据收发涉及的缓冲区：</p>
+<p>发送端：应用程序发送缓冲区（程序员开辟），TCP套接字发送缓冲区（内核缓冲区）。调用send函数后，将数据从程序缓冲区拷贝到内核缓冲区，内核缓冲区发送至网络</p>
+<p>接收端：TCP套接字接收缓冲区（内核缓冲区），应用程序接收缓冲区，同样包含两个接收步骤</p>
+</li>
+</ul>
+<ul>
+<li><p>一次请求响应的数据接收</p>
+<p>接收端接收完全部数据后，接收就算结束，发送端断开连接。recv函数的返回值代表接收的字节数，发送端调用shutdown关闭发送，接收端看到recv的返回值为0，就跳出接收循环。</p>
+</li>
+<li><p>多次请求响应的数据接收（定长数据的接收）</p>
+<p>判断连接是否结束的方式是通信双方约定好发送数据的长度，接收方提前知道发送的数据长度，接收完固定长度后结束，发送方发送完并不调用shutdown</p>
+</li>
+<li><p>变长数据的接收</p>
+<p>方法1：数据报结尾增加结束标识符，如果碰到结束标识符，表示结束，需要扫描每个字符</p>
+<p>方法2：在数据报前加一个报头，报头里有一个字段表示消息长度</p>
+<p>扩展结构体：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">MyData</span> &#123;</span><br><span class="line">    <span class="type">int</span> nLen;</span><br><span class="line">    <span class="type">char</span> data[<span class="number">0</span>];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>可以实现数组的动态扩展，即根据需要分配不同大小的内存空间给结构体。</li>
+<li>可以节省内存空间，因为char data[0]不占用结构体的空间，只是一个指向结构体后面数据的地址。</li>
+<li>可以方便地通过data访问结构体后面的数据，而不需要额外的指针变量。</li>
+</ul>
+<p>一个简单的例子是：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MyData</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> nLen;</span><br><span class="line">    <span class="type">char</span> data[<span class="number">0</span>];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">char</span> str[<span class="number">10</span>] = <span class="string">&quot;123456789&quot;</span>;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">MyData</span> *<span class="title">p</span> =</span> (<span class="keyword">struct</span> MyData *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> MyData) + <span class="built_in">strlen</span>(str));</span><br><span class="line">    <span class="built_in">memcpy</span>(p-&gt;data, str, <span class="built_in">strlen</span>(str));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;p-&gt;data is %s\n&quot;</span>, p-&gt;data);</span><br><span class="line">    <span class="built_in">free</span>(p);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p-&gt;data is 123456789</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，通过malloc分配了一个大小为sizeof(struct MyData) + strlen(str)的内存空间给p，然后将str拷贝到p-&gt;data中，最后通过p-&gt;data打印出了str的内容。</p>
+</li>
+</ul>
+<h3 id="十二、I-O控制命令"><a href="#十二、I-O控制命令" class="headerlink" title="十二、I/O控制命令"></a>十二、I/O控制命令</h3><p>套接字的IO控制用于设置套接字的工作模式（阻塞式或者非阻塞式），也可以用来获取与套接字相关的IO操作的参数信息（比如读取输入缓冲区的字节数）</p>
+<h3 id="十三、套接字选项"><a href="#十三、套接字选项" class="headerlink" title="十三、套接字选项"></a>十三、套接字选项</h3><p>设置或者获取套接字的属性</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://brucewayne9064.github.io">Bruce</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://brucewayne9064.github.io/2023/03/20/TCP%E7%BC%96%E7%A8%8B/">https://brucewayne9064.github.io/2023/03/20/TCP%E7%BC%96%E7%A8%8B/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://brucewayne9064.github.io" target="_blank">Bruce的BLOG</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/c/">c++</a><a class="post-meta__tags" href="/tags/linux/">linux</a><a class="post-meta__tags" href="/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程</a></div><div class="post_share"><div class="social-share" data-image="/img/sanji_avatar.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/03/21/UDP%E7%BC%96%E7%A8%8B/" title="【网络编程3】UDP编程"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">【网络编程3】UDP编程</div></div></a></div><div class="next-post pull-right"><a href="/2023/03/14/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" title="排序算法"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">排序算法</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/04/27/HTTP%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BC%96%E7%A8%8B/" title="【网络编程项目1】HTTP服务器编程"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-04-27</div><div class="title">【网络编程项目1】HTTP服务器编程</div></div></a></div><div><a href="/2023/03/21/UDP%E7%BC%96%E7%A8%8B/" title="【网络编程3】UDP编程"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-03-21</div><div class="title">【网络编程3】UDP编程</div></div></a></div><div><a href="/2023/03/23/%E5%8E%9F%E5%A7%8B%E5%A5%97%E6%8E%A5%E5%AD%97%E7%BC%96%E7%A8%8B/" title="【网络编程4】原始套接字编程"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-03-23</div><div class="title">【网络编程4】原始套接字编程</div></div></a></div><div><a href="/2023/03/01/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B/" title="【网络编程1】多线程编程"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-03-01</div><div class="title">【网络编程1】多线程编程</div></div></a></div><div><a href="/2023/04/07/%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%A8%A1%E5%9E%8B%E8%AE%BE%E8%AE%A1/" title="【网络编程5】服务器模型设计"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-04-07</div><div class="title">【网络编程5】服务器模型设计</div></div></a></div><div><a href="/2023/04/27/%E7%BD%91%E7%BB%9C%E6%80%A7%E8%83%BD%E5%B7%A5%E5%85%B7Iperf/" title="【网络编程6】网络性能工具Iperf"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-04-27</div><div class="title">【网络编程6】网络性能工具Iperf</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/sanji_avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Bruce</div><div class="author-info__description">人生得意须尽欢，莫使金樽空对月</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">25</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">19</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/brucewayne9064" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:906491934@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%A5%97%E6%8E%A5%E5%AD%97%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">一、套接字基本概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E7%BD%91%E7%BB%9C%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%9E%B6%E6%9E%84"><span class="toc-number">2.</span> <span class="toc-text">二、网络程序的架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81IP%E5%9C%B0%E5%9D%80%E7%9A%84%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2"><span class="toc-number">3.</span> <span class="toc-text">三、IP地址的格式转换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%A5%97%E6%8E%A5%E5%AD%97%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="toc-number">4.</span> <span class="toc-text">四、套接字的类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E5%A5%97%E6%8E%A5%E5%AD%97%E5%9C%B0%E5%9D%80"><span class="toc-number">5.</span> <span class="toc-text">五、套接字地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E4%B8%BB%E6%9C%BA%E5%AD%97%E8%8A%82%E5%BA%8F%E5%92%8C%E7%BD%91%E7%BB%9C%E5%AD%97%E8%8A%82%E5%BA%8F"><span class="toc-number">6.</span> <span class="toc-text">六、主机字节序和网络字节序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E5%8D%8F%E8%AE%AE%E6%97%8F%E5%92%8C%E5%9C%B0%E5%9D%80%E6%97%8F"><span class="toc-number">7.</span> <span class="toc-text">七、协议族和地址族</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AB%E3%80%81TCP%E5%A5%97%E6%8E%A5%E5%AD%97%E7%BC%96%E7%A8%8B%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%AD%A5%E9%AA%A4"><span class="toc-number">8.</span> <span class="toc-text">八、TCP套接字编程的基本步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B9%9D%E3%80%81TCP%E5%A5%97%E6%8E%A5%E5%AD%97%E7%BC%96%E7%A8%8B%E7%9A%84%E7%9B%B8%E5%85%B3%E5%87%BD%E6%95%B0"><span class="toc-number">9.</span> <span class="toc-text">九、TCP套接字编程的相关函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%81%E3%80%81%E7%AE%80%E5%8D%95%E7%9A%84TCP%E5%A5%97%E6%8E%A5%E5%AD%97%E7%BC%96%E7%A8%8B"><span class="toc-number">10.</span> <span class="toc-text">十、简单的TCP套接字编程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%81%E4%B8%80%E3%80%81%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3TCP%E7%BC%96%E7%A8%8B"><span class="toc-number">11.</span> <span class="toc-text">十一、深入理解TCP编程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%81%E4%BA%8C%E3%80%81I-O%E6%8E%A7%E5%88%B6%E5%91%BD%E4%BB%A4"><span class="toc-number">12.</span> <span class="toc-text">十二、I&#x2F;O控制命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%81%E4%B8%89%E3%80%81%E5%A5%97%E6%8E%A5%E5%AD%97%E9%80%89%E9%A1%B9"><span class="toc-number">13.</span> <span class="toc-text">十三、套接字选项</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/05/12/%E5%8E%9F%E7%A0%81%E8%A1%A5%E7%A0%81%E5%92%8C%E5%8F%8D%E7%A0%81/" title="【c++笔记】原码补码和反码">【c++笔记】原码补码和反码</a><time datetime="2023-05-12T08:20:59.000Z" title="发表于 2023-05-12 16:20:59">2023-05-12</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/04/27/mysql%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A/" title="【笔记】mysql必知必会">【笔记】mysql必知必会</a><time datetime="2023-04-27T10:30:38.000Z" title="发表于 2023-04-27 18:30:38">2023-04-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/04/27/HTTP%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BC%96%E7%A8%8B/" title="【网络编程项目1】HTTP服务器编程">【网络编程项目1】HTTP服务器编程</a><time datetime="2023-04-27T10:21:34.000Z" title="发表于 2023-04-27 18:21:34">2023-04-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/04/27/%E7%BD%91%E7%BB%9C%E6%80%A7%E8%83%BD%E5%B7%A5%E5%85%B7Iperf/" title="【网络编程6】网络性能工具Iperf">【网络编程6】网络性能工具Iperf</a><time datetime="2023-04-27T10:15:07.000Z" title="发表于 2023-04-27 18:15:07">2023-04-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/04/08/%E4%BB%96%E6%94%B9%E5%8F%98%E4%BA%86%E4%B8%AD%E5%9B%BD/" title="【读书笔记】他改变了中国">【读书笔记】他改变了中国</a><time datetime="2023-04-08T06:12:17.000Z" title="发表于 2023-04-08 14:12:17">2023-04-08</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By Bruce</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="true"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
