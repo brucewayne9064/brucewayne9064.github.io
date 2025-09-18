@@ -121,16 +121,6 @@
 
   <div class="container">
     
-<!-- 1. 搜索框 & 排序 -->
-<div style="margin-bottom: 20px;">
-  <input type="text" id="search-input" placeholder="搜索游戏..." style="padding: 6px; width: 200px;" />
-  <select id="sort-select" style="padding: 6px;">
-    <option value="default">默认排序</option>
-    <option value="name">按名称排序</option>
-    <option value="time">按时间排序</option>
-  </select>
-</div>
-
 <!-- 随机句子区域 -->
 <div id="quote-box" onclick="changeQuote()" style="
   font-family: 'Fira Code', 'Noto Sans SC', monospace;
@@ -142,6 +132,16 @@
   cursor: pointer;
   user-select: none;
 "></div>
+
+<!-- 1. 搜索框 & 排序 -->
+<div style="margin-bottom: 20px;">
+  <input type="text" id="search-input" placeholder="搜索游戏..." style="padding: 6px; width: 200px;" />
+  <select id="sort-select" style="padding: 6px;">
+    <option value="default">默认排序</option>
+    <option value="name">按名称排序</option>
+    <option value="time">按时间排序</option>
+  </select>
+</div>
 
 
 <!-- 2. 游戏展示区域 -->
@@ -218,8 +218,35 @@ const quotes = [
   "Trust Only in the Force.",
   "嘿，真逗真逗，大侦探真逗。你居然用你那一介匹夫的头脑，来对抗我的谜题。",
   "早上好，夜之城！昨天的死人乐透，最后结果是满打满算的整整三十个！",
-  "Fantasy Lives On..."
+  "Fantasy Lives On...",
+  "....这次是最后的一个“任务”。结束后，我就要和大帝都说再见了。因为我要把我的“刑警魂”传给你。",
+  "不，并非如此。只因眼前的少女是如此美丽，以致我失去了言语。",
+  "Audentes fortuna iuvat !"
 ];
+
+// 🎯 随机池，防止连续重复
+let quotePool = [...quotes];
+let lastQuote = "";
+
+function getUniqueRandomQuote() {
+  if (quotePool.length === 0) {
+    quotePool = [...quotes];
+  }
+
+  let randomIndex = Math.floor(Math.random() * quotePool.length);
+  let selected = quotePool[randomIndex];
+
+  // 避免连续重复
+  while (selected === lastQuote && quotePool.length > 1) {
+    randomIndex = Math.floor(Math.random() * quotePool.length);
+    selected = quotePool[randomIndex];
+  }
+
+  // 移除已用
+  quotePool.splice(randomIndex, 1);
+  lastQuote = selected;
+  return selected;
+}
 
 let isTyping = false;
 
@@ -243,12 +270,12 @@ function typeWriterEffect(text, delay = 40) {
 }
 
 function changeQuote() {
-  if (isTyping) return; // 避免打字时点击多次
-  const random = quotes[Math.floor(Math.random() * quotes.length)];
-  typeWriterEffect(random);
+  if (isTyping) return;
+  const newQuote = getUniqueRandomQuote();
+  typeWriterEffect(newQuote);
 }
 
-changeQuote(); // 页面加载首次显示
+changeQuote(); // 页面初次加载
 </script>
 
 
